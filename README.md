@@ -1,4 +1,4 @@
-## Vue.js, Vuetify.js and TypeScript template
+## My portfolio, written in TypeScript using Vue with Vuetify
 
 #### Build Setup
 
