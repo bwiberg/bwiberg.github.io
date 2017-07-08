@@ -1,0 +1,43 @@
+{
+  "name": "vue-typescript-simple",
+  "description": "A Simple Vue.js TypeScript project",
+  "version": "1.0.0",
+  "author": "",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+  },
+  "dependencies": {
+    "vuetify": "^0.13.0"
+  },
+  "devDependencies": {
+    "@types/js-cookie": "^2.0.28",
+    "@types/lodash": "^4.14.68",
+    "circular-dependency-plugin": "^3.0.0",
+    "lodash": "^4.17.4",
+    "normalize.css": "^7.0.0",
+    "style-loader": "^0.18.2",
+    "typescript-string-enums": "^0.3.4",
+    "vue": "^2.3.2",
+    "vue-class-component": "^5.0.1",
+    "vue-directive-tooltip": "^1.1.0",
+    "vue-property-decorator": "^5.0.1",
+    "vuex": "^2.3.1",
+    "vuex-class": "^0.2.0",
+    "cross-env": "^3.0.0",
+    "css-loader": "^0.28.1",
+    "file-loader": "^0.11.1",
+    "html-loader": "^0.4.5",
+    "js-cookie": "^2.1.4",
+    "node-sass": "^4.5.3",
+    "raw-loader": "^0.5.1",
+    "sass-loader": "^6.0.6",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.4.1",
+    "vue-loader": "^12.0.3",
+    "vue-template-compiler": "^2.3.2",
+    "webpack": "^2.6.1",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "false": {}
+}
