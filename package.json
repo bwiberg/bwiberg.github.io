@@ -1,6 +1,6 @@
 {
-  "name": "vue-typescript-simple",
-  "description": "A Simple Vue.js TypeScript project",
+  "name": "vue-portfolio",
+  "description": "Benjamin Wiberg's portfolio",
   "version": "1.0.0",
   "author": "",
   "scripts": {
@@ -8,11 +8,12 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
-    "vuetify": "^0.13.0"
+    "vuetify": "^0.15.0-beta.2"
   },
   "devDependencies": {
     "@types/js-cookie": "^2.0.28",
     "@types/lodash": "^4.14.68",
+    "@types/q": "^1.0.2",
     "circular-dependency-plugin": "^3.0.0",
     "cross-env": "^3.0.0",
     "css-loader": "^0.28.1",
@@ -22,6 +23,7 @@
     "lodash": "^4.17.4",
     "node-sass": "^4.5.3",
     "normalize.css": "^7.0.0",
+    "q": "^1.5.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",

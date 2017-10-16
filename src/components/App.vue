@@ -1,21 +1,46 @@
 <template>
-    <v-app dark>
-        <v-toolbar class="primary">
-            <v-toolbar-side-icon></v-toolbar-side-icon>
-            <v-toolbar-title>Benjamin Wiberg</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-                <v-icon>more_vert</v-icon>
-            </v-btn>
-        </v-toolbar>
-        <Ultragrid :data="['Item 1', 'Item 2', 'Item 3']">
-            <template slot="item" scope="props">
-                <div>
-                    <p>{{ props.data }}</p>
-                </div>
-            </template>
-        </Ultragrid>
-    </v-app>
+    <div>
+        <button @click="fetchProjects()">
+            Load projects
+        </button>
+        <Modal v-if="currentProject">
+            <ProjectModalContent slot="content"
+                                 :project="currentProject"
+                                 @close="currentProject = null"></ProjectModalContent>
+        </Modal>
+        <div class="main-content">
+            <Ultragrid :items="projects" :padding="24">
+                <template slot="item"
+                          scope="props">
+                    <transition name="project" appear>
+                        <div class="project-card-container">
+                            <div class="card -level-2 ultragrid-card -project"
+                                 :style="{'background-image': `url(${props.data.thumbnail})`}"
+                                 @click="openProjectModal(props.data, $event)"
+                                 @mousemove="onMouseMove($event)"
+                                 @mouseleave="onMouseLeave($event)">
+                                <div class="title-container">
+                                    <h3 class="title-text skew-5"><strong>{{ props.data.title }}</strong></h3>
+                                </div>
+                                <!--<p>Description: {{ props.data.description }}</p>-->
+                                <!--<p>Tags: {{ props.data.tags }}</p>-->
+                            </div>
+                        </div>
+                    </transition>
+                </template>
+                <template slot="placeholder" scope="props">
+                    <div class="project-card-container">
+                        <div class="card -level-2 ultragrid-card">
+                            <!--<v-btn v-if="props.index + 1 === props.numPlaceholders"
+                                   @click.native="loadProjects()">
+                                Load more projects
+                            </v-btn>-->
+                        </div>
+                    </div>
+                </template>
+            </Ultragrid>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -26,21 +51,130 @@ import {
 } from "vuex-class";
 
 import Ultragrid from "components/ultragrid/Ultragrid";
+import Array2D from './ultragrid/Array2D';
+import SimpleWorker from '../thirdparty/simple-worker/index';
+import UltragridItem from './ultragrid/props/UltragridItem';
+import DomUtils from '../util/DomUtils';
+import Project from '../Project';
+import Modal from './Modal';
+import ProjectModalContent from './ProjectModalContent';
 
 @Component({
     components: {
-        Ultragrid
+        Ultragrid, Modal, ProjectModalContent
     }
 })
 export default class App extends Vue {
+    @Action fetchProjects: () => Promise<null>;
+    @Getter projects: Project[];
+
+    @Model() currentProject: Project | null = null;
+
+    mounted() {
+        this.fetchProjects();
+    }
+
+    openProjectModal(project: Project, event: MouseEvent) {
+        this.currentProject = project;
+
+        // clear hover effect
+        const element: HTMLElement = <HTMLElement> event.currentTarget;
+        element.style.webkitTransform = "";
+        element.className = element.className.replace(" -hoverable", "");
+    }
+
+    onMouseMove(event: MouseEvent): void {
+        const element: HTMLElement = <HTMLElement> event.currentTarget;
+        const {top, left, width, height} = element.getBoundingClientRect();
+
+        const factor: number = 0.025;
+        const dx: number = left - event.clientX + width / 2;
+        const dy: number = top - event.clientY + height / 2;
+
+        console.log(`∂x=${dx} ∂y=${dy}`);
+
+        element.style.webkitTransform = `rotateY(${-factor * dx}deg) rotateX(${factor * dy}deg) translateZ(1em)`;
+        if (!element.className.includes("-hoverable")) {
+            element.className = element.className + " -hoverable";
+        }
+    }
+
+    onMouseLeave(event: MouseEvent): void {
+        const element: HTMLElement = <HTMLElement> event.currentTarget;
+        element.style.webkitTransform = "";
+    }
 }
 </script>
 <style lang="scss" scoped>
+@import "../style/utils";
+
 $primaryFontSize: 36px;
+
+.project-enter-active, .project-leave-active {
+    transition: opacity 0.25s ease-out;
+}
+
+.project-enter, .project-leave-to {
+    opacity: 0;
+}
 
 div {
     h1 {
         font-size: $primaryFontSize;
+    }
+
+    &.main-content {
+        width: 60%;
+        min-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.project-card-container {
+    perspective: 600px;
+    width: 100%;
+    height: 100%;
+    &:hover {
+        z-index: 100;
+    }
+}
+
+.ultragrid-card {
+    width: 100%;
+    height: 100% !important;
+    margin: 0;
+    @include animation(fadein 0.5s);
+    @include transition(all ease 0.15s);
+
+    &.-project {
+        cursor: pointer;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+
+}
+
+div.title-container {
+    @include center();
+
+    h3 {
+        text-align: center;
+        font-size: 1.2em;
+        text-transform: uppercase;
+    }
+}
+
+@include keyframes(fadein) {
+    0% {
+        opacity: 0;
+        @include scale(0.1);
+        @include transform-origin(top left);
+    }
+    99% {
+        @include transform-origin(center);
     }
 }
 </style>

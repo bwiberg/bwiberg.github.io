@@ -1,14 +1,30 @@
-import Vue from "vue";
+import Vue from 'vue';
 
-import "normalize.css/normalize.css";
+import 'normalize.css/normalize.css';
+import 'style/theme.scss';
 
-import "vuetify/dist/vuetify.min.css";
-import Vuetify from "vuetify";
+import App from 'components/App';
+import store from './store';
 
-import App from "components/App";
-import store from "./store";
+Vue.mixin({
+    methods: {
+        $info: function (arg: any) {
+            console.info(arg);
+        },
 
-Vue.use(Vuetify);
+        $log: function (arg: any) {
+            console.log(arg);
+        },
+
+        $warn: function (arg: any) {
+            console.warn(arg);
+        },
+
+        $error: function (arg: any) {
+            console.error(arg);
+        },
+    },
+});
 
 new Vue({
     el: "#app",
