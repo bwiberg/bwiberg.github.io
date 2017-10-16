@@ -11,6 +11,7 @@ interface Project {
     tags: string[];
     color: string;
     images: string[];
+    youtube: string;
 }
 
 export default Project;

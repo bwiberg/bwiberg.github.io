@@ -15,15 +15,13 @@
                     <transition name="project" appear>
                         <div class="project-card-container">
                             <div class="card -level-2 ultragrid-card -project"
-                                 :style="{'background-image': `url(${props.data.thumbnail})`}"
                                  @click="openProjectModal(props.data, $event)"
                                  @mousemove="onMouseMove($event)"
                                  @mouseleave="onMouseLeave($event)">
                                 <div class="title-container">
                                     <h3 class="title-text skew-5"><strong>{{ props.data.title }}</strong></h3>
                                 </div>
-                                <!--<p>Description: {{ props.data.description }}</p>-->
-                                <!--<p>Tags: {{ props.data.tags }}</p>-->
+                                <img :src="`${props.data.thumbnail}`"/>
                             </div>
                         </div>
                     </transition>
@@ -131,8 +129,14 @@ div {
     }
 }
 
+.overflow-hider {
+    @include size(100%, 100%);
+    overflow: hidden;
+}
+
 .project-card-container {
     perspective: 600px;
+    @include transform-style-preserve-3d();
     width: 100%;
     height: 100%;
     &:hover {
@@ -146,18 +150,29 @@ div {
     margin: 0;
     @include animation(fadein 0.5s);
     @include transition(all ease 0.15s);
+    @include transform-style-preserve-3d();
 
     &.-project {
         cursor: pointer;
+        background-color: transparent;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
-    }
 
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        &:hover div.title-container {
+            @include center(translateZ(4em));
+        }
+    }
 
 }
 
 div.title-container {
+    @include transition(transform ease 0.3s);
     @include center();
 
     h3 {
