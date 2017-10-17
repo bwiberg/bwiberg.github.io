@@ -13,6 +13,10 @@ interface Project {
     images: string[];
     youtube: string;
     github: string;
+
+    webpage: string;
+    webpageLabel: string;
+    webpageOcticon: string;
 }
 
 export default Project;

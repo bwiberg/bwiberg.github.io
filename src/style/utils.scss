@@ -38,6 +38,13 @@
   @include translate(0, -50%);
 }
 
+@mixin horizontal-align($position: relative) {
+  position: $position;
+  left: 50%;
+  @include translate(-50%, 0);
+}
+
+
 @mixin size($width, $height) {
   width: $width;
   height: $height;

@@ -38,13 +38,16 @@ const store = new Vuex.Store({
 
                 const onDataRetrieved = (data: any) => {
                     try {
-                        const projects: Project[] = (<any[]>data).map(data => {
-                            data.rows = parseInt(data.rows);
-                            data.cols = parseInt(data.cols);
-                            data.tags = data.tags.split(", ") || [];
-                            data.images = data.images.split(", ") || [];
-                            return <Project> data;
-                        });
+                        const projects: Project[] = (<any[]>data)
+                            .filter(data => data.enabled.toLowerCase() === "true")
+                            .map(data => {
+                                data.rows = parseInt(data.rows);
+                                data.cols = parseInt(data.cols);
+                                data.tags = data.tags.split(", ") || [];
+                                data.images = data.images.split(", ") || [];
+
+                                return <Project> data;
+                            });
 
                         commit(Mutations.SET_PROJECTS, projects);
                         resolve();

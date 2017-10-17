@@ -5,21 +5,47 @@
                  ref="wrapper"
                  @click="handleOutsideClick">
                 <div class="modal-container card">
-                    <div class="section header"
-                         :style="{'background-color': project.color}">
+                    <!--<div class="section header"
+                         :style="{'background-color': project.color}">-->
+                    <div class="section header">
                         <h1>{{ project.title }}</h1>
                         <div class="close"
                              @click="$emit('close')">
-                            <svg viewbox="0 0 40 40" width="48px" height="48px">
-                                <path class="close-x" d="M 10,10 L 30,30 M 30,10 L 10,30"/>
-                            </svg>
+                            <span class="x"></span>
                         </div>
                     </div>
                     <div class="section content">
+                        <!--<div class="tags">
+                            <span v-for="tag in project.tags">{{ tag }}</span>
+                        </div>-->
                         <div class="description">
                             <p v-for="section in descriptionSections">
                                 {{ section }}
                             </p>
+                        </div>
+                        <div class="youtube"
+                             v-if="project.youtube">
+                            <iframe width="560"
+                                    height="315"
+                                    :src="project.youtube"
+                                    frameborder="0"
+                                    allowfullscreen></iframe>
+                        </div>
+                        <div class="links" v-if="hasLinks">
+                            <div>
+                                <div class="github" v-if="project.github">
+                                    <a :href="project.github" target="_blank">
+                                        <i class="octicon octicon-mark-github"></i>
+                                        <span>Source</span>
+                                    </a>
+                                </div>
+                                <div class="webpage" v-if="project.webpage">
+                                    <a :href="project.webpage" target="_blank">
+                                        <i class="octicon octicon-globe" :class="'octicon-' + project.webpageOcticon"></i>
+                                        <span>{{ project.webpageLabel }}</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -55,6 +81,10 @@ export default class ProjectModal extends Vue {
 
         this.$emit('close');
     }
+
+    get hasLinks(): boolean {
+        return !!this.project.github || !!this.project.webpage;
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -88,14 +118,20 @@ export default class ProjectModal extends Vue {
 }
 
 .modal-container {
-    @include center();
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    @include transform(translate(-50%, -50%));
     height: auto !important;
     overflow: auto;
     display: block;
 }
 
-@include media(">phone", "<=tablet") {
+@include media("<=tablet") {
     .modal-container {
+        @include transform(translate(0, 0));
+        top: 0%;
+        left: 0%;
         width: 100%;
         margin: 0;
     }
@@ -128,35 +164,94 @@ export default class ProjectModal extends Vue {
 div.section {
     padding-left: 20px;
     padding-right: 20px;
+
+    div {
+        &:first-child {
+            margin-top: 1em;
+        }
+        margin-bottom: 1em;
+    }
 }
 
 div.section.header {
     position: relative;
     @include border-radius(top-left top-right);
+    border-bottom: 1px solid lightgrey;
 
     h1 {
         display: inline-block;
         margin: 0;
-        padding: 0.67em 0;
+        padding: 0.33em 0;
     }
     div.close {
+        cursor: pointer;
         display: inline-block;
         @include vertical-align(absolute);
         right: 12px;
         margin: 0;
-        width: 48px;
-        height: 48px;
-        background: #DDD;
-        border-radius: 50%;
+        padding: .4em;
+        @include size(36px, 36px);
+    }
+}
 
-        svg  {
-            border: solid 4px black;
+div.section.content {
+    div {
+        //margin-top: 1em;
+        //margin-bottom: 1em;
+    }
 
-            .close-x {
-                stroke: black;
-                fill: transparent;
-                stroke-linecap: round;
-                stroke-width: 2;
+    .tags {
+        span {
+            background-color: lightgrey;
+            border-radius: 5px;
+            padding-left: .2em;
+            padding-right: .2em;
+            margin-right: 0.6em;
+
+            //            &:nth-child(1) {
+            //                background-color: green;
+            //            }
+            //
+            //            &:nth-child(2) {
+            //                background-color: blue;
+            //            }
+        }
+    }
+
+    .description {
+
+    }
+
+    .youtube {
+        iframe {
+            display: block;
+            margin: auto;
+        }
+    }
+
+    .images {
+
+    }
+
+    .links {
+        text-align: center;
+
+        div {
+            margin: 0;
+            padding: 0;
+            display: inline-block;
+
+            div {
+                &:not(:first-child) {
+                    margin-left: 1em;
+                }
+
+                a {
+                    text-decoration: none;
+                    &:not(:hover) {
+                        color: black;
+                    }
+                }
             }
         }
     }

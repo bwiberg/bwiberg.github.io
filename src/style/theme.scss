@@ -1,19 +1,21 @@
 @import "./utils.scss";
 
+h1, h2, h3, h4 {
+  font-family: 'Roboto', sans-serif;
+}
+
+p {
+  font-family: 'Open Sans', sans-serif;
+}
+
 body {
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f7fbfc+0,d9edf2+40,add9e4+100;Blue+3D+%231 */
-  background: rgb(247,251,252); /* Old browsers */
-  background: -moz-linear-gradient(-45deg, rgba(247,251,252,1) 0%, rgba(217,237,242,1) 40%, rgba(173,217,228,1) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(-45deg, rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(135deg, rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7fbfc', endColorstr='#add9e4',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  background: darkgray;
 }
 
 @mixin border-radius($corners: "") {
   @if (type_of($corners) == string) {
     border-radius: 4px;
-  }
-  @else {
+  } @else {
     $corners: quote($corners);
     @if (includes($corners, "top-right")) {
       border-top-right-radius: 4px;
@@ -86,4 +88,58 @@ body {
 
 .skew-25 {
   @include skew(-25);
+}
+
+$borderColor: #151515;
+.x {
+  display: block;
+  position: fixed;
+  width: 32px;
+  height: 32px;
+  @include center();
+  transition: transform .4s ease, border .4s ease;
+
+  &:hover {
+    @include center(rotate(180deg));
+
+    &:before {
+      border-top: 3px solid $borderColor;
+    }
+
+    &:after {
+      border-top: 3px solid $borderColor;
+    }
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    display: block;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 32px;
+    height: 0;
+    border-top: 1.5px solid $borderColor;
+    transform: rotate(45deg);
+    transform-origin: center;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    display: block;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 32px;
+    height: 0;
+    border-top: 1.5px solid $borderColor;
+    transform: rotate(-45deg);
+    transform-origin: center;
+  }
 }

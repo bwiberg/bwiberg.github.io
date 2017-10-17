@@ -5,7 +5,7 @@
                       @close="currentProject = null">
         </ProjectModal>
         <div class="main-content">
-            <Ultragrid :items="projects" :padding="24" :randomness="0.3">
+            <Ultragrid :items="projects" :padding="18" :randomness="0.3">
                 <template slot="item"
                           scope="props">
                     <transition name="project" appear>
@@ -15,7 +15,7 @@
                                  @mousemove="onMouseMove($event)"
                                  @mouseleave="onMouseLeave($event)">
                                 <div class="title-container">
-                                    <h3 class="title-text"><strong>{{ props.data.title }}</strong></h3>
+                                    <h3 class="title-text">{{ props.data.title }}</h3>
                                 </div>
                                 <img v-if="props.data.thumbnail != ''" :src="`${props.data.thumbnail}`"/>
                             </div>
@@ -123,7 +123,7 @@ div {
     }
 }
 
-@include media(">phone", "<=tablet") {
+@include media("<=tablet") {
     div.main-content {
         width: 100%;
         margin: 0;
@@ -176,22 +176,17 @@ div {
             @include border-radius;
             @include size(100%, 100%);
             object-fit: cover;
-            filter: grayscale(80%) brightness(75%);
+            filter: grayscale(10%) brightness(75%) contrast(70%);
             transition: filter 0.25s ease;
 
             &:hover {
-                filter: grayscale(0%) brightness(100%);
+                filter: grayscale(0%) brightness(100%) contrast(100%);
             }
         }
     }
 
     &.-placeholder {
-        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#b5bdc8+0,828c95+36,28343b+100;Grey+Black+3D */
-        background: #b5bdc8; /* Old browsers */
-        background: -moz-linear-gradient(45deg, #b5bdc8 0%, #828c95 36%, #28343b 100%); /* FF3.6-15 */
-        background: -webkit-linear-gradient(45deg, #b5bdc8 0%, #828c95 36%, #28343b 100%); /* Chrome10-25,Safari5.1-6 */
-        background: linear-gradient(45deg, #b5bdc8 0%, #828c95 36%, #28343b 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b5bdc8', endColorstr='#28343b', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+        background: #555760;
     }
 }
 
@@ -202,8 +197,9 @@ div.title-container {
     @include center(translateZ($div-title-container-translationZ) scale($div-title-container-scale));
 
     h3 {
-        text-align: center;
         font-size: 1.7em;
+        letter-spacing: 1px;
+        text-align: center;
         text-transform: uppercase;
         color: white;
         text-shadow: 0px 0px 8px rgba(0, 0, 0, 1.0);
