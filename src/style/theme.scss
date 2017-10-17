@@ -1,8 +1,38 @@
 @import "./utils.scss";
 
+body {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f7fbfc+0,d9edf2+40,add9e4+100;Blue+3D+%231 */
+  background: rgb(247,251,252); /* Old browsers */
+  background: -moz-linear-gradient(-45deg, rgba(247,251,252,1) 0%, rgba(217,237,242,1) 40%, rgba(173,217,228,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, rgba(247,251,252,1) 0%,rgba(217,237,242,1) 40%,rgba(173,217,228,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7fbfc', endColorstr='#add9e4',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+@mixin border-radius($corners: "") {
+  @if (type_of($corners) == string) {
+    border-radius: 4px;
+  }
+  @else {
+    $corners: quote($corners);
+    @if (includes($corners, "top-right")) {
+      border-top-right-radius: 4px;
+    }
+    @if (includes($corners, "top-left")) {
+      border-top-left-radius: 4px;
+    }
+    @if (includes($corners, "bottom-right")) {
+      border-bottom-right-radius: 4px;
+    }
+    @if (includes($corners, "bottom-left")) {
+      border-bottom-left-radius: 4px;
+    }
+  }
+}
+
 .card {
   background: #fff;
-  border-radius: 2px;
+  @include border-radius;
   display: inline-block;
   height: 300px;
   margin: 1rem;

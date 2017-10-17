@@ -1,14 +1,9 @@
 <template>
     <div>
-        <button @click="fetchProjects()">
-            Load projects
-        </button>
-        <Modal v-if="currentProject"
-               @close="currentProject = null">
-            <ProjectModalContent slot="content"
-                                 :project="currentProject"
-                                 @close="currentProject = null"></ProjectModalContent>
-        </Modal>
+        <ProjectModal v-if="currentProject"
+                      :project="currentProject"
+                      @close="currentProject = null">
+        </ProjectModal>
         <div class="main-content">
             <Ultragrid :items="projects" :padding="24" :randomness="0.3">
                 <template slot="item"
@@ -20,16 +15,16 @@
                                  @mousemove="onMouseMove($event)"
                                  @mouseleave="onMouseLeave($event)">
                                 <div class="title-container">
-                                    <h3 class="title-text skew-5"><strong>{{ props.data.title }}</strong></h3>
+                                    <h3 class="title-text"><strong>{{ props.data.title }}</strong></h3>
                                 </div>
-                                <img :src="`${props.data.thumbnail}`"/>
+                                <img v-if="props.data.thumbnail != ''" :src="`${props.data.thumbnail}`"/>
                             </div>
                         </div>
                     </transition>
                 </template>
                 <template slot="placeholder" scope="props">
                     <div class="project-card-container">
-                        <div class="card -level-2 ultragrid-card">
+                        <div class="card -level-2 ultragrid-card -placeholder">
                             <!--<v-btn v-if="props.index + 1 === props.numPlaceholders"
                                    @click.native="loadProjects()">
                                 Load more projects
@@ -55,12 +50,11 @@ import SimpleWorker from '../thirdparty/simple-worker/index';
 import UltragridItem from './ultragrid/props/UltragridItem';
 import DomUtils from '../util/DomUtils';
 import Project from '../Project';
-import Modal from './Modal';
-import ProjectModalContent from './ProjectModalContent';
+import ProjectModal from './ProjectModal';
 
 @Component({
     components: {
-        Ultragrid, Modal, ProjectModalContent
+        Ultragrid, ProjectModal
     }
 })
 export default class App extends Vue {
@@ -105,6 +99,7 @@ export default class App extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+@import "../style/theme";
 @import "../style/utils";
 
 $primaryFontSize: 36px;
@@ -178,11 +173,26 @@ div {
         background-position: center center;
 
         img {
-            max-width: 100%;
-            max-height: 100%;
+            @include border-radius;
+            @include size(100%, 100%);
+            object-fit: cover;
+            filter: grayscale(80%) brightness(75%);
+            transition: filter 0.25s ease;
+
+            &:hover {
+                filter: grayscale(0%) brightness(100%);
+            }
         }
     }
 
+    &.-placeholder {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#b5bdc8+0,828c95+36,28343b+100;Grey+Black+3D */
+        background: #b5bdc8; /* Old browsers */
+        background: -moz-linear-gradient(45deg, #b5bdc8 0%, #828c95 36%, #28343b 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(45deg, #b5bdc8 0%, #828c95 36%, #28343b 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(45deg, #b5bdc8 0%, #828c95 36%, #28343b 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b5bdc8', endColorstr='#28343b', GradientType=1); /* IE6-9 fallback on horizontal gradient */
+    }
 }
 
 $div-title-container-translationZ: 6em;
@@ -193,9 +203,14 @@ div.title-container {
 
     h3 {
         text-align: center;
-        font-size: 1.5em;
+        font-size: 1.7em;
         text-transform: uppercase;
+        color: white;
+        text-shadow: 0px 0px 8px rgba(0, 0, 0, 1.0);
+        pointer-events: none;
     }
+
+    pointer-events: none;
 }
 
 @include keyframes(fadein) {

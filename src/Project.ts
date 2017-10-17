@@ -12,6 +12,7 @@ interface Project {
     color: string;
     images: string[];
     youtube: string;
+    github: string;
 }
 
 export default Project;
