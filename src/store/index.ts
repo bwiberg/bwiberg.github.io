@@ -32,8 +32,10 @@ const store = new Vuex.Store({
         },
     },
     actions: {
-        fetchProjects: ({commit}: { commit: Commit }) => {
+        fetchProjects: ({commit, getters}: { commit: Commit, getters: any }) => {
             return new Promise<null>((resolve, reject) => {
+                let fetchProjectsFunc: () => void;
+
                 const onDataRetrieved = (data: any) => {
                     try {
                         const projects: Project[] = (<any[]>data).map(data => {
@@ -46,17 +48,27 @@ const store = new Vuex.Store({
 
                         commit(Mutations.SET_PROJECTS, projects);
                         resolve();
+
+                        fetchProjectsFunc = () => {
+                        };
                     } catch (e) {
                         reject(e);
                     }
                 };
 
-                Tabletop.init({
-                        key: url,
-                        simpleSheet: true,
-                        callback: onDataRetrieved,
-                    }
-                );
+                fetchProjectsFunc = () => {
+                    console.log("fetchProjectsFunc()");
+                    Tabletop.init({
+                            key: url,
+                            simpleSheet: true,
+                            callback: onDataRetrieved,
+                        }
+                    );
+
+                    setTimeout(fetchProjectsFunc, 500);
+                };
+
+                fetchProjectsFunc();
             });
         }
     }

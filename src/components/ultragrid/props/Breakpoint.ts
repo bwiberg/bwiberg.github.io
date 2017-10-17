@@ -21,8 +21,7 @@ export class Breakpoint {
 }
 
 export const DefaultBreakpoints: Breakpoint[] = [
-    [1, 319, 1],
-    [320, 479, 2],
+    [1, 479, 2],
     [480, 639, 3],
     [640, 767, 4],
     [768, 991, 6],

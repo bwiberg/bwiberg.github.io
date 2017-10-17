@@ -58,7 +58,14 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  @include transform(translate(-50%, -50%) unquote($transforms));
+
+  @if type_of($transforms) == string {
+    @include transform(translate(-50%, -50%) unquote($transforms));
+  }
+  @else {
+    @include transform(translate(-50%, -50%) $transforms);
+  }
+
 }
 
 @mixin rotate($deg) {
@@ -97,3 +104,10 @@
   -ms-backface-visibility: $arg;
   backface-visibility: $arg;
 }
+
+
+/**
+ * Media queries
+ */
+
+@import "../../node_modules/include-media/dist/_include-media.scss";

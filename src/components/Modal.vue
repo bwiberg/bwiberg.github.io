@@ -1,15 +1,17 @@
 <template>
-    <transition :name="transition">
+    <transition :name="transition" appear>
         <div class="modal-mask">
-            <div class="modal-wrapper">
-                <slot name="content">
-                    <div class="modal-container">
+            <div class="modal-wrapper"
+                 ref="wrapper"
+                 @click="handleOutsideClick">
+                <div class="modal-container card">
+                    <slot name="content">
                         Default content
                         <button class="modal-default-button" @click="$emit('close')">
                             OK
                         </button>
-                    </div>
-                </slot>
+                    </slot>
+                </div>
             </div>
         </div>
     </transition>
@@ -25,12 +27,30 @@ import {
 @Component({
     components: {}
 })
-export default class App extends Vue {
+export default class Modal extends Vue {
     @Prop({default: "modal-default"}) transition: string;
+    @Prop({default: true}) closeOnOutsideClick: boolean;
+
+    private handleOutsideClick(event: Event): void {
+        if (event.target !== this.$refs.wrapper) {
+            return;
+        }
+
+        this.$emit('close');
+    }
 }
 </script>
 <style lang="scss" scoped>
 @import "../style/utils";
+
+.modal-enter-active, .modal-leave-active {
+    transition: transform 10s ease;
+}
+
+.modal-enter, .modal-leave-to {
+    opacity: 0;
+    @include scale(0.8);
+}
 
 .modal-mask {
     position: fixed;
@@ -50,23 +70,37 @@ export default class App extends Vue {
 }
 
 .modal-container {
-    width: 200px;
-    margin: 0px auto;
-    padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-    transition: all .3s ease;
+    @include center();
+}
+
+@include media(">phone", "<=tablet") {
+    .modal-container {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+@include media(">tablet", "<=desktop") {
+    .modal-container {
+        width: 400px;
+    }
+}
+
+@include media(">desktop") {
+    .modal-container {
+        width: 600px;
+    }
 }
 
 .modal-default-button {
     float: right;
 }
 
-.modal-default-enter, .modal-default-leave-active {
+.modal-default-enter-active, .modal-default-leave-active {
+    transition: all 0.2s ease;
+}
+
+.modal-default-enter, .modal-default-leave-to {
     opacity: 0;
-    .modal-container {
-        @include translate(0, -50px);
-    }
 }
 </style>

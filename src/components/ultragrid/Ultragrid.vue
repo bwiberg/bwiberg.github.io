@@ -31,6 +31,7 @@ import Array2D from './Array2D';
 import Box from './util/Box';
 import Utils from './util/Utils';
 import Vector2 from './util/Vector2';
+import * as Random from "random-js";
 
 interface ItemPosition {
     row: number;
@@ -56,6 +57,7 @@ export default class Ultragrid extends Vue {
     @Prop({"default": () => []}) items: UltragridItem[];
     @Prop({"default": () => DefaultBreakpoints}) breakpoints: Breakpoint[];
     @Prop({"default": 4}) padding: number;
+    @Prop({"default": 0}) randomness: number;
 
     @Model() pixelWidth: number = INVALID_NUMBER;
     @Model() itemPositions: ItemPosition[] = <ItemPosition[]>[];
@@ -65,13 +67,17 @@ export default class Ultragrid extends Vue {
     get tileLayouts(): TileLayout[] {
         const itemLayouts: TileLayout[] = <TileLayout[]>[];
         for(let i = 0; i < this.items.length; ++i) {
-            let item: UltragridItem = this.items[i];
-            let itemPosition: ItemPosition = this.itemPositions[i];
+            const item: UltragridItem = this.items[i];
+            const itemPosition: ItemPosition = this.itemPositions[i];
+
+            const rows: number = item.rows <= this.layoutArray2D.rows ? item.rows : this.layoutArray2D.rows;
+            const cols: number = item.cols <= this.layoutArray2D.cols ? item.cols : this.layoutArray2D.cols;
+
             const tileLayout: TileLayout = <TileLayout>{
                 top: itemPosition.row * this.unitLength + this.padding,
                 left: itemPosition.col * this.unitLength + this.padding,
-                width: item.cols * this.unitLength - this.padding,
-                height: item.rows * this.unitLength - this.padding,
+                width: cols * this.unitLength - this.padding,
+                height: rows * this.unitLength - this.padding,
             };
 
             itemLayouts[i] = tileLayout;
@@ -155,18 +161,22 @@ export default class Ultragrid extends Vue {
         array2D.setActiveArea(numRowsGuess, this.columns);
         array2D.clear(INVALID_NUMBER);
 
+        const rand = new Random(Random.engines.mt19937().seed(27403));
         this.items.forEach((item: UltragridItem, i: number) => {
-            Utils.forEach2D(new Vector2(array2D.rows + 1 - item.rows, array2D.cols + 1 - item.cols), (row: number, col: number) => {
-                if (array2D.areaContainsOnly(row, col, item.rows, item.cols, -1)) {
-                    array2D.setArea(row, col, item.rows, item.cols, i);
-
-                    itemPositions[i] = <ItemPosition>{
-                        row: row,
-                        col: col
-                    };
-                    return Utils.STOP;
+            const rows: number = item.rows <= array2D.rows ? item.rows : array2D.rows;
+            const cols: number = item.cols <= array2D.cols ? item.cols : array2D.cols;
+            Utils.forEach2D(new Vector2(array2D.rows + 1 - rows, array2D.cols + 1 - cols), (row: number, col: number) => {
+                if (!array2D.areaContainsOnly(row, col, rows, cols, -1) || rand.real(0, 1) < this.randomness) {
+                    return Utils.CONTINUE;
                 }
-                return Utils.CONTINUE;
+
+                array2D.setArea(row, col, rows, cols, i);
+
+                itemPositions[i] = <ItemPosition>{
+                    row: row,
+                    col: col
+                };
+                return Utils.STOP;
             });
         });
 

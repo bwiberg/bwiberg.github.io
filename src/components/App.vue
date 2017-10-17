@@ -3,13 +3,14 @@
         <button @click="fetchProjects()">
             Load projects
         </button>
-        <Modal v-if="currentProject">
+        <Modal v-if="currentProject"
+               @close="currentProject = null">
             <ProjectModalContent slot="content"
                                  :project="currentProject"
                                  @close="currentProject = null"></ProjectModalContent>
         </Modal>
         <div class="main-content">
-            <Ultragrid :items="projects" :padding="24">
+            <Ultragrid :items="projects" :padding="24" :randomness="0.3">
                 <template slot="item"
                           scope="props">
                     <transition name="project" appear>
@@ -89,7 +90,7 @@ export default class App extends Vue {
         const dx: number = left - event.clientX + width / 2;
         const dy: number = top - event.clientY + height / 2;
 
-        console.log(`∂x=${dx} ∂y=${dy}`);
+        // console.log(`∂x=${dx} ∂y=${dy}`);
 
         element.style.webkitTransform = `rotateY(${-factor * dx}deg) rotateX(${factor * dy}deg) translateZ(1em)`;
         if (!element.className.includes("-hoverable")) {
@@ -122,10 +123,27 @@ div {
     }
 
     &.main-content {
-        width: 60%;
-        min-width: 600px;
         margin-left: auto;
         margin-right: auto;
+    }
+}
+
+@include media(">phone", "<=tablet") {
+    div.main-content {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+@include media(">tablet", "<=desktop") {
+    div.main-content {
+        width: 80%;
+    }
+}
+
+@include media(">desktop") {
+    div.main-content {
+        width: 60%;
     }
 }
 
@@ -135,7 +153,7 @@ div {
 }
 
 .project-card-container {
-    perspective: 600px;
+    perspective: 400px;
     @include transform-style-preserve-3d();
     width: 100%;
     height: 100%;
@@ -163,21 +181,19 @@ div {
             max-width: 100%;
             max-height: 100%;
         }
-
-        &:hover div.title-container {
-            @include center(translateZ(4em));
-        }
     }
 
 }
 
+$div-title-container-translationZ: 6em;
+$div-title-container-scale: 0.75;
 div.title-container {
-    @include transition(transform ease 0.3s);
-    @include center();
+    @include animation(translateZ-title 1.0s ease);
+    @include center(translateZ($div-title-container-translationZ) scale($div-title-container-scale));
 
     h3 {
         text-align: center;
-        font-size: 1.2em;
+        font-size: 1.5em;
         text-transform: uppercase;
     }
 }
@@ -186,10 +202,16 @@ div.title-container {
     0% {
         opacity: 0;
         @include scale(0.1);
-        @include transform-origin(top left);
+        @include transform-origin(center);
     }
     99% {
         @include transform-origin(center);
+    }
+}
+
+@include keyframes(translateZ-title) {
+    50% {
+        @include center(scale($div-title-container-scale));
     }
 }
 </style>
