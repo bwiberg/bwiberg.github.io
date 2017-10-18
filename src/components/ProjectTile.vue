@@ -6,7 +6,12 @@
                  @mousemove="onMouseMove($event)"
                  @mouseleave="onMouseLeave($event)">
                 <div class="title-container">
-                    <h3 class="title-text">{{ project.title }}</h3>
+                    <h3 v-if="imageIsLoaded"
+                        class="title-text">{{ project.title }}</h3>
+                </div>
+                <div v-if="!imageIsLoaded" class="sk-double-bounce">
+                    <div class="sk-child sk-double-bounce1"></div>
+                    <div class="sk-child sk-double-bounce2"></div>
                 </div>
                 <img v-if="project.thumbnail != ''"
                      ref="thumbnail"
@@ -76,6 +81,8 @@ export default class ProjectTile extends Vue {
 @import "../style/theme.scss";
 @import "../style/utils.scss";
 
+@import '../../node_modules/spinkit/scss/spinners/2-double-bounce';
+
 .ultragrid-card {
     &.-project {
         cursor: pointer;
@@ -94,6 +101,13 @@ export default class ProjectTile extends Vue {
             &:hover {
                 filter: grayscale(0%) brightness(100%) contrast(100%);
             }
+        }
+
+        div.sk-double-bounce {
+            @include center();
+            margin: 0;
+            padding: 0;
+            @include size(60px, 60px);
         }
     }
 }

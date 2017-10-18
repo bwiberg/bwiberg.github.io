@@ -12,6 +12,7 @@
     "include-media": "^1.4.9",
     "markdown-it": "^8.4.0",
     "random-js": "^1.0.8",
+    "spinkit": "^1.2.5",
     "vuetify": "^0.15.0-beta.2"
   },
   "devDependencies": {
