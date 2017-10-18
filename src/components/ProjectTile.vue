@@ -7,13 +7,15 @@
                  @mouseleave="onMouseLeave($event)">
                 <div class="title-container">
                     <h3 v-if="imageIsLoaded"
-                        class="title-text">{{ project.title }}</h3>
+                        class="title-text"
+                        :class="project.title.toLowerCase().includes('about') ? 'about' : ''">{{ project.title }}</h3>
                 </div>
                 <div v-if="!imageIsLoaded" class="sk-double-bounce">
                     <div class="sk-child sk-double-bounce1"></div>
                     <div class="sk-child sk-double-bounce2"></div>
                 </div>
                 <img v-if="project.thumbnail != ''"
+                     v-show="imageIsLoaded"
                      ref="thumbnail"
                      :src="`${project.thumbnail}`"/>
             </div>
@@ -41,9 +43,7 @@ export default class ProjectTile extends Vue {
         const thumbnail: HTMLImageElement = <HTMLImageElement> this.$refs.thumbnail;
 
         const callback = () => {
-            console.log("onThumbnailLoaded()");
             this.imageIsLoaded = true;
-
             thumbnail.removeEventListener("load", callback);
         };
 
@@ -59,9 +59,9 @@ export default class ProjectTile extends Vue {
         const element: HTMLElement = <HTMLElement> event.currentTarget;
         const {top, left, width, height} = element.getBoundingClientRect();
 
-        const factor: number = 0.025;
-        const dx: number = left - event.clientX + width / 2;
-        const dy: number = top - event.clientY + height / 2;
+        const factor: number = 4;
+        const dx: number = (left - event.clientX + width / 2) / width;
+        const dy: number = (top - event.clientY + height / 2) / height;
 
         // console.log(`∂x=${dx} ∂y=${dy}`);
 
@@ -80,23 +80,25 @@ export default class ProjectTile extends Vue {
 <style lang="scss" scoped>
 @import "../style/theme.scss";
 @import "../style/utils.scss";
-
 @import '../../node_modules/spinkit/scss/spinners/2-double-bounce';
 
+$projectTransitionDuration: 0.1s;
+$projectTransitionInterp: ease-out;
 .ultragrid-card {
     &.-project {
         cursor: pointer;
-        background-color: transparent;
+        background-color: lightgrey;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center center;
+        transition: transform $projectTransitionDuration $projectTransitionInterp;
 
         img {
             @include border-radius;
             @include size(100%, 100%);
             object-fit: cover;
             filter: grayscale(40%) brightness(75%) contrast(70%);
-            transition: filter 0.25s ease;
+            transition: filter $projectTransitionDuration $projectTransitionInterp;
 
             &:hover {
                 filter: grayscale(0%) brightness(100%) contrast(100%);
@@ -126,6 +128,11 @@ div.title-container {
         color: white;
         text-shadow: 0px 0px 8px rgba(0, 0, 0, 1.0);
         pointer-events: none;
+
+        &.about {
+            text-shadow: 0px 0px 8px rgba(0, 0, 0, 0);
+            color: transparent;
+        }
     }
 
     pointer-events: none;

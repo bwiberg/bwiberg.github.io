@@ -12,15 +12,10 @@
                                  @click="openProjectModal(props.data, $event)"></ProjectTile>
                 </template>
                 <template slot="placeholder" scope="props">
-                    <div class="project-card-container">
+                    <!--<div class="project-card-container">
                         <div class="card -level-2 ultragrid-card -placeholder">
-
-                            <!--<v-btn v-if="props.index + 1 === props.numPlaceholders"
-                                   @click.native="loadProjects()">
-                                Load more projects
-                            </v-btn>-->
                         </div>
-                    </div>
+                    </div>-->
                 </template>
             </Ultragrid>
         </div>
