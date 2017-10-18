@@ -199,6 +199,10 @@ section.modal-container {
         overflow-y: auto;
         min-height: 0px;
 
+        :last-child {
+            margin-bottom: 1em;
+        }
+
         .tags {
             span {
                 background-color: lightgrey;

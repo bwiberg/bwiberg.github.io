@@ -24,6 +24,5 @@ export const DefaultBreakpoints: Breakpoint[] = [
     [1, 479, 2],
     [480, 639, 3],
     [640, 767, 4],
-    [768, 991, 6],
-    [992, 2 ** 16, 8]
+    [768, 2**16, 6]
 ].map(arr => new Breakpoint(arr[0], arr[1], arr[2]));

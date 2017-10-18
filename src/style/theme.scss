@@ -171,3 +171,25 @@ $borderColor: #151515;
     transform-origin: center;
   }
 }
+
+.project-card-container {
+  perspective: 400px;
+  @include transform-style-preserve-3d();
+  width: 100%;
+  height: 100%;
+  &:hover {
+    z-index: 100;
+  }
+}
+
+.ultragrid-card {
+  width: 100%;
+  height: 100% !important;
+  margin: 0;
+  @include animation(fadein 0.5s);
+  @include transition(all ease 0.15s);
+  @include transform-style-preserve-3d();
+}
+
+$div-title-container-translationZ: 6em;
+$div-title-container-scale: 0.75;

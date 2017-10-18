@@ -9,7 +9,6 @@ interface Project {
     cols: number;
     description: string;
     tags: string[];
-    color: string;
     images: string[];
     youtube: string;
     github: string;

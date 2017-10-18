@@ -58,6 +58,7 @@ export default class Ultragrid extends Vue {
     @Prop({"default": () => DefaultBreakpoints}) breakpoints: Breakpoint[];
     @Prop({"default": 4}) padding: number;
     @Prop({"default": 0}) randomness: number;
+    @Prop({"default": 1}) seed: number;
 
     @Model() pixelWidth: number = INVALID_NUMBER;
     @Model() itemPositions: ItemPosition[] = <ItemPosition[]>[];
@@ -161,7 +162,7 @@ export default class Ultragrid extends Vue {
         array2D.setActiveArea(numRowsGuess, this.columns);
         array2D.clear(INVALID_NUMBER);
 
-        const rand = new Random(Random.engines.mt19937().seed(27403));
+        const rand = new Random(Random.engines.mt19937().seed(this.seed));
         this.items.forEach((item: UltragridItem, i: number) => {
             const rows: number = item.rows <= array2D.rows ? item.rows : array2D.rows;
             const cols: number = item.cols <= array2D.cols ? item.cols : array2D.cols;
