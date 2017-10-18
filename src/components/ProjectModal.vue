@@ -156,6 +156,7 @@ export default class ProjectModal extends Vue {
     @include size(100%, 100%);
 }
 
+
 section.modal-container {
     display: flex;
     flex-direction: column;
@@ -175,19 +176,23 @@ section.modal-container {
     }
 
     header {
-        @include border-radius(top-left top-right);
+        top: -1px;
+        background: #1b1b1b;
+        padding: 11px 19px;
+
         flex-shrink: 0;
         position: relative;
 
         h1 {
             display: inline-block;
             margin: 0;
+            color: white;
         }
         div.close {
             cursor: pointer;
             display: inline-block;
             @include vertical-align(absolute);
-            right: 12px;
+            right: 1px;
             margin: 0;
             padding: .4em;
             @include size(36px, 36px);
@@ -195,6 +200,8 @@ section.modal-container {
     }
 
     article {
+        padding: 21px !important;
+        padding-top: 12px !important;
         flex: 1 1 auto;
         overflow-y: auto;
         min-height: 0px;
