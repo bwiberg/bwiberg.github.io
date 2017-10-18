@@ -25,6 +25,7 @@
                 <template slot="placeholder" scope="props">
                     <div class="project-card-container">
                         <div class="card -level-2 ultragrid-card -placeholder">
+
                             <!--<v-btn v-if="props.index + 1 === props.numPlaceholders"
                                    @click.native="loadProjects()">
                                 Load more projects
@@ -52,6 +53,16 @@ import DomUtils from '../util/DomUtils';
 import Project from '../Project';
 import ProjectModal from './ProjectModal';
 
+const PreloadImageURLs: string[] = [
+    "https://s1.imgsha.com/2017/10/18/kRm6E.md.jpg",
+    "https://s1.imgsha.com/2017/10/17/GByeF.md.jpg",
+    "https://s1.imgsha.com/2017/10/17/GuKT2.jpg",
+    "https://s1.imgsha.com/2017/10/17/GTMvy.md.jpg",
+    "https://s1.imgsha.com/2017/10/17/GTRWs.jpg",
+    "https://s1.imgsha.com/2017/10/17/GzZmd.md.jpg",
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Vue.js_Logo.svg/480px-Vue.js_Logo.svg.png",
+];
+
 @Component({
     components: {
         Ultragrid, ProjectModal
@@ -63,7 +74,11 @@ export default class App extends Vue {
 
     @Model() currentProject: Project | null = null;
 
-    mounted() {
+    beforeCreate(): void {
+        // preload images
+    }
+
+    mounted(): void {
         this.fetchProjects();
     }
 

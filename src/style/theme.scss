@@ -4,12 +4,40 @@ h1, h2, h3, h4 {
   font-family: 'Roboto', sans-serif;
 }
 
-p {
+p, li {
   font-family: 'Open Sans', sans-serif;
 }
 
 body {
   background: darkgray;
+
+  &.modal-open {
+    overflow: hidden;
+  }
+}
+
+$linkBlue: cornflowerblue;
+a {
+  color: $linkBlue;
+  display: inline-block;
+  position: relative;
+  text-decoration: none;
+  &:before {
+    background-color: $linkBlue;
+    content: '';
+    height: 2px;
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: width 0.3s ease-in-out;
+    width: 100%;
+  }
+  &:hover {
+    &:before {
+      width: 0;
+    }
+  }
 }
 
 @mixin border-radius($corners: "") {

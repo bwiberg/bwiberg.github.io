@@ -114,7 +114,7 @@ export default class Ultragrid extends Vue {
         return this.numRowsUsed * this.unitLength + this.padding;
     }
 
-    get unitLength(): number {
+    public get unitLength(): number {
         if (this.columns < 1 || this.pixelWidth < 1) {
             return INVALID_NUMBER;
         }

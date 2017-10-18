@@ -8,7 +8,9 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "@types/markdown-it": "0.0.4",
     "include-media": "^1.4.9",
+    "markdown-it": "^8.4.0",
     "random-js": "^1.0.8",
     "vuetify": "^0.15.0-beta.2"
   },
