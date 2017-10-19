@@ -8,7 +8,7 @@ import VTooltip = require("v-tooltip");
 import App from "components/App";
 import store from "./store";
 
-Vue.use(<PluginObject<{}>> VTooltip);
+Vue.use(<PluginObject<{}>> (<any> VTooltip));
 
 Vue.mixin({
     methods: {
