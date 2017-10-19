@@ -13,9 +13,9 @@ interface Project {
     youtube: string;
     github: string;
 
-    webpage: string;
-    webpageLabel: string;
-    webpageOcticon: string;
+    webpages: string[];
+    webpageLabels: string[];
+    webpageOcticons: string[];
 }
 
 export default Project;

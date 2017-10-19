@@ -36,15 +36,16 @@
                         <div>
                             <div class="github" v-if="project.github">
                                 <a :href="project.github" target="_blank">
-                                    <i class="octicon octicon-mark-github"></i>
-                                    <span>Source</span>
+                                    <i class="fa fa-code" aria-hidden="true"></i>
+                                    <!--<span>Source</span>-->
                                 </a>
                             </div>
-                            <div class="webpage" v-if="project.webpage">
-                                <a :href="project.webpage" target="_blank">
-                                    <i class="octicon octicon-globe"
-                                       :class="'octicon-' + project.webpageOcticon"></i>
-                                    <span>{{ project.webpageLabel }}</span>
+                            <div class="webpage" v-for="url, index in project.webpages">
+                                <a :href="url" target="_blank">
+                                    <i class="fa"
+                                       :class="'fa-' + project.webpageOcticons[index]"
+                                       aria-hidden="true"></i>
+                                    <!--<span>{{ project.webpageLabels[index] }}</span>-->
                                 </a>
                             </div>
                         </div>
@@ -87,7 +88,7 @@ export default class ProjectModal extends Vue {
     }
 
     get hasLinks(): boolean {
-        return !!this.project.github || !!this.project.webpage;
+        return !!this.project.github || this.project.webpages.length > 0;
     }
 
     get markdownToHtml(): string {
@@ -207,10 +208,6 @@ section.modal-container {
         overflow-y: auto;
         min-height: 0px;
 
-        :last-child {
-            margin-bottom: 1em;
-        }
-
         .tags {
             span {
                 background-color: lightgrey;
@@ -239,6 +236,15 @@ section.modal-container {
 
     footer.links {
         text-align: center;
+
+        a {
+            i {
+                font-size: 1.5em;
+            }
+            span {
+                vertical-align: center;
+            }
+        }
 
         a {
             white-space: nowrap;

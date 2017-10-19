@@ -46,6 +46,12 @@ const store = new Vuex.Store({
                                 data.tags = data.tags.split(", ") || [];
                                 data.images = data.images.split(", ") || [];
 
+                                if (data.webpages != "") {
+                                    data.webpages = (<string> data.webpages).split(", ");
+                                    data.webpageLabels = (<string> data.webpageLabels).split(", ");
+                                    data.webpageOcticons = (<string> data.webpageOcticons).split(", ");
+                                }
+
                                 return <Project> data;
                             });
 
