@@ -1,9 +1,5 @@
 <template>
     <div>
-        <ProjectModal v-if="currentProject"
-                      :project="currentProject"
-                      @close="currentProject = null">
-        </ProjectModal>
         <div class="main-content">
             <Ultragrid :items="projects" :padding="18" :randomness="0.65" :seed="2">
                 <template slot="item"
@@ -19,6 +15,10 @@
                 </template>
             </Ultragrid>
         </div>
+        <ProjectModal v-if="currentProject"
+                      :project="currentProject"
+                      @close="currentProject = null">
+        </ProjectModal>
     </div>
 </template>
 
@@ -38,16 +38,6 @@ import Project from '../Project';
 import ProjectModal from './ProjectModal';
 import ProjectTile from './ProjectTile';
 
-const PreloadImageURLs: string[] = [
-    "https://s1.imgsha.com/2017/10/18/kRm6E.md.jpg",
-    "https://s1.imgsha.com/2017/10/17/GByeF.md.jpg",
-    "https://s1.imgsha.com/2017/10/17/GuKT2.jpg",
-    "https://s1.imgsha.com/2017/10/17/GTMvy.md.jpg",
-    "https://s1.imgsha.com/2017/10/17/GTRWs.jpg",
-    "https://s1.imgsha.com/2017/10/17/GzZmd.md.jpg",
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Vue.js_Logo.svg/480px-Vue.js_Logo.svg.png",
-];
-
 @Component({
     components: {
         Ultragrid, ProjectTile, ProjectModal
@@ -65,6 +55,9 @@ export default class App extends Vue {
 
     mounted(): void {
         this.fetchProjects();
+        if (!window.hasOwnProperty("chrome")) {
+            alert("Please use the Chrome browser");
+        }
     }
 
     openProjectModal(project: Project, event: MouseEvent) {

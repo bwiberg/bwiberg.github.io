@@ -200,6 +200,7 @@ section.modal-container {
     }
 
     article {
+        background-color: white;
         padding: 21px !important;
         padding-top: 12px !important;
         flex: 1 1 auto;
