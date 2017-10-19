@@ -1,10 +1,14 @@
-import Vue from 'vue';
+import Vue, {PluginObject} from "vue";
 
-import 'normalize.css/normalize.css';
-import 'style/theme.scss';
+import "normalize.css/normalize.css";
+import "style/theme.scss";
 
-import App from 'components/App';
-import store from './store';
+import VTooltip = require("v-tooltip");
+
+import App from "components/App";
+import store from "./store";
+
+Vue.use(<PluginObject<{}>> VTooltip);
 
 Vue.mixin({
     methods: {

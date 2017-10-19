@@ -34,13 +34,17 @@
                     </article>
                     <footer v-if="hasLinks" class="links">
                         <div>
-                            <div class="github" v-if="project.github">
+                            <div v-if="project.github"
+                                 class="github"
+                                 v-tooltip.top-center="'Source on GitHub'">
                                 <a :href="project.github" target="_blank">
                                     <i class="fa fa-code" aria-hidden="true"></i>
                                     <!--<span>Source</span>-->
                                 </a>
                             </div>
-                            <div class="webpage" v-for="url, index in project.webpages">
+                            <div class="webpage"
+                                 v-for="url, index in project.webpages"
+                                 v-tooltip.top-center="project.webpageLabels[index]">
                                 <a :href="url" target="_blank">
                                     <i class="fa"
                                        :class="'fa-' + project.webpageOcticons[index]"
@@ -156,7 +160,6 @@ export default class ProjectModal extends Vue {
     position: relative;
     @include size(100%, 100%);
 }
-
 
 section.modal-container {
     display: flex;

@@ -13,6 +13,7 @@
     "markdown-it": "^8.4.0",
     "random-js": "^1.0.8",
     "spinkit": "^1.2.5",
+    "v-tooltip": "^2.0.0-rc.2",
     "vuetify": "^0.15.0-beta.2"
   },
   "devDependencies": {
